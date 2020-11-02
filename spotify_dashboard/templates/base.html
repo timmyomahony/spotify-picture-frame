@@ -1,0 +1,33 @@
+{% load static i18n %}<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Spotify Dashboard{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal Spotify Dashboard">
+    <meta name="author" content="Timmy O'Mahony">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
+    {% block css %}
+      <link href="{% static 'css/styles.min.css' %}" rel="stylesheet">
+    {% endblock %}
+
+  </head>
+  <body>
+    <div class="container">
+      {% block content %}
+      {% endblock content %}
+    </div>
+    {% block javascript %}
+      <script src="{% static 'js/vendor.min.js' %}"></script>
+      <script src="{% static 'js/scripts.min.js' %}"></script>
+    {% endblock javascript %}
+  </body>
+</html>
+ 
