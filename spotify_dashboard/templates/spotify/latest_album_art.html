@@ -1,7 +1,96 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="bg-black h-screen w-screen flex justify-center items-center">
-        <img class="lazyload h-full" data-src="{{ object.image }}">
+    <div class="glide">
+        <div data-glide-el="track" class="glide__track">
+            <ul class="glide__slides">
+                {% for track in object_list %}
+                    <li class="glide__slide">
+                        <img class="lazyload" data-src="{{ track.image }}">
+                        <p>{{ track.name }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <style>
+        html, body {
+            max-height: 100%;
+            padding: 0;
+            margin: 0;
+            max-width: 100%;
+            height: 100%;
+            background: #000;
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        .glide {
+            height: 100%;
+        }
+
+        .glide__track {
+            height: 100%;
+        }
+
+        .glide__slides {
+            margin: 0;
+            height: 100%;
+        }
+
+        .glide__slide {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .glide__slide img {
+            height: 100%;
+        }
+
+        .glide__slide p {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            margin: 0;
+            padding: 5px 10px;
+            font-size: 12px;
+            line-height: 1;
+            color: white;
+            background: black;
+        }
+
+        .lazyload,
+        .lazyloading {
+            transition: all ease-in 600ms;
+        }
+
+        .lazyload {
+            opacity: 0;
+        }
+
+        .lazyloaded {
+            opacity: 1;
+        }
+
+    </style>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type="text/javascript">
+        new Glide('.glide', {
+            type: 'carousel',
+            autoplay: 60000,
+            perView: 1,
+            focusAt: "center",
+            hoverpause: false,
+            animationDuration: 300,
+            animationTimingFunc: "ease-in-out"
+        }).mount();
+    </script>
 {% endblock %}
