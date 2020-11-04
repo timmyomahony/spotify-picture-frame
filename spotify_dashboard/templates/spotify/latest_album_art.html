@@ -7,7 +7,7 @@
                 {% for track in object_list %}
                     <li class="glide__slide">
                         <img class="lazyload" data-src="{{ track.image }}">
-                        <p>{{ track.name }}</p>
+                        <p>{{ track.title }} - {{ track.artist }}</p>
                     </li>
                 {% endfor %}
             </ul>
@@ -19,6 +19,7 @@
     {{ block.super }}
     <style>
         html, body {
+            box-sizing: border-box;
             max-height: 100%;
             padding: 0;
             margin: 0;
@@ -49,7 +50,9 @@
         }
 
         .glide__slide img {
+            width: 100%;
             height: 100%;
+            object-fit: cover;
         }
 
         .glide__slide p {
@@ -61,7 +64,7 @@
             font-size: 12px;
             line-height: 1;
             color: white;
-            background: black;
+            background: rgba(0, 0, 0, .75);
         }
 
         .lazyload,
@@ -85,12 +88,16 @@
     <script type="text/javascript">
         new Glide('.glide', {
             type: 'carousel',
-            autoplay: 60000,
+            autoplay: 20000,
             perView: 1,
             focusAt: "center",
             hoverpause: false,
-            animationDuration: 300,
-            animationTimingFunc: "ease-in-out"
+            animationDuration: 0,
         }).mount();
+
+        // Refresh every hour
+        setTimeout(function() {
+            location.reload();
+        }, 1000 * 60 * 60)
     </script>
 {% endblock %}

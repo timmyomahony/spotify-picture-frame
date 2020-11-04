@@ -3,7 +3,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
-from spotify.models import Update,Track
+from spotify.models import Track
 
 
 class Command(BaseCommand):
@@ -17,32 +17,22 @@ class Command(BaseCommand):
             redirect_uri=settings.SPOTIFY_REDIRECT,
             open_browser=False))
 
-        try:
-            last_update = Update.objects.all().latest()
-        except:
-            last_update = None
+        response = client._get('me/top/tracks', **{
+            "limit": 50,
+            "time_range": "short_term"
+        })
 
-        kwargs = {
-            "limit": 50
-        }
-        if last_update:
-            kwargs['after'] = last_update.unix_timestamp
-
-        response = client._get('me/player/recently-played', **kwargs)
+        Track.objects.all().delete()
 
         for result in response['items']:
-            played_at = datetime.datetime.strptime(result["played_at"], "%Y-%m-%dT%H:%M:%S.%fZ") # 2016-12-13T20:42:17.016Z
             try:
-                track = Track.objects.get(id=result["track"]["id"])
-                track.last_played_at = played_at
-                track.save()
+                Track.objects.get(id=result["id"])
             except Track.DoesNotExist:
-                track = Track.objects.create(
-                    id=result["track"]["id"],
-                    name=result["track"]["name"],
-                    href=result["track"]["href"],
-                    last_played_at=played_at,
-                    image=[img["url"] for img in result["track"]["album"]["images"]][0],
+                Track.objects.create(
+                    id=result["id"],
+                    title=result["name"],
+                    album=result["album"]["name"],
+                    artist=result["artists"][0]["name"],
+                    href=result["href"],
+                    image=[img["url"] for img in result["album"]["images"]][0],
                     data=result)
-
-        Update.objects.create()

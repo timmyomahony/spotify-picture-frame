@@ -16,4 +16,4 @@ class SpotifyLatestAlbumArt(ListView):
     model = Track
 
     def get_queryset(queryset=None):
-        return Track.objects.all()[:10]
+        return Track.objects.filter(published=True).order_by("?")
