@@ -22,4 +22,8 @@ COPY ./compose/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
+# Add crontab
+COPY etc/crontab /etc/crontabs/root
+CMD ["crond", "-f", "-d", "8"]
+
 WORKDIR /app
