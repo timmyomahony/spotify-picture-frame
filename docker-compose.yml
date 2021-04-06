@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    image: spotify_dashboard_django
+    container_name: spotify_dashboard_django
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    command: /start

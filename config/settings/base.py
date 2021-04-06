@@ -40,11 +40,12 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///spotify_dashboard")
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': str(ROOT_DIR / "spotify_dashboard.db"),
+    }
 }
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -162,8 +163,7 @@ TEMPLATES = [
                 "django.template.context_processors.media",
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
-                "django.contrib.messages.context_processors.messages",
-                "spotify_dashboard.utils.context_processors.settings_context",
+                "django.contrib.messages.context_processors.messages"
             ],
         },
     }
